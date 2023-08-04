@@ -14,9 +14,9 @@
 
         >
         <pl.droidsonroids.gif.GifImageView
-            android:layout_width="400dp"
+            android:layout_width="200dp"
             android:layout_height="124dp"
-            android:background="@drawable/tinnhan1"
+            android:background="@drawable/gitthongbao"
 
             />
 

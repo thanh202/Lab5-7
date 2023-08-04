@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class MainActivitySever extends AppCompatActivity {
     // Khai báo các view
     private TextView tvServerName, tvServerPort, tvStatus, tvReceivedMessage;
-    private String serverIP = "10.103.238.192"; // ĐỊA CHỈ IP MÁY
+    private String serverIP = "192.168.0.108"; // ĐỊA CHỈ IP MÁY
     private int serverPort = 1234; // PORT
     private Button bntStart, bntStop, bntSend;
     private EditText edMessage;
@@ -51,12 +51,16 @@ public class MainActivitySever extends AppCompatActivity {
         tvServerName.setText(serverIP);
         tvServerPort.setText(String.valueOf(serverPort));
     }
+
+
     // Xử lý sự kiện nút "Bắt đầu Server"
     public void onClickStartServe(View view) {
         serverThread = new ServerThread();
         Toast.makeText(this, "SERVER ĐÃ CHẠY", Toast.LENGTH_SHORT).show();
         serverThread.startServer();
     }
+
+
     // Xử lý sự kiện nút "Dừng Server"
 
     public void onClickStopServe(View view) {
@@ -65,6 +69,9 @@ public class MainActivitySever extends AppCompatActivity {
             Toast.makeText(this, "SERVER Dừng", Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
 // Xử lý nút gửi
     public void onClickSend(View view) {
         String messageToSend = edMessage.getText().toString();
@@ -82,6 +89,10 @@ public class MainActivitySever extends AppCompatActivity {
             serverRunning = true;
             start();
         }
+
+
+
+
         // Phương stop
         public void stopServer() {
             serverRunning = false;
@@ -99,6 +110,9 @@ public class MainActivitySever extends AppCompatActivity {
                 }
             });
         }
+
+
+
         // Phương thức gửi tin nhắn đến tất cả các Client đã kết nối
         public void sendMessageToClients(final String message) {
             if (serverSocket != null) {
@@ -114,41 +128,45 @@ public class MainActivitySever extends AppCompatActivity {
         }
 
 
-        private ArrayList<ClientHandler> clientsList = new ArrayList<>();
 
-        @Override
-        public void run() {
-            try {
-                // Tạo Socket Server
-                serverSocket = new ServerSocket(serverPort);
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        tvStatus.setText("Waiting for Clients");
-                    }
-                });
 
-                while (serverRunning) {
-                    // Chấp nhận các kết nối từ Client
-                    Socket socket = serverSocket.accept();
-                    // Xử lý Client kết nối mới trong một luồng riêng biệt
 
-                    ClientHandler client = new ClientHandler(socket);
-                    client.start();
-                    clientsList.add(client);
-                    // Cập nhật giao diện khi có Client kết nối thành công
 
+            private ArrayList<ClientHandler> clientsList = new ArrayList<>();
+
+            @Override
+            public void run() {
+                try {
+                    // Tạo Socket Server
+                    serverSocket = new ServerSocket(serverPort);
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            tvStatus.setText("Connected to: " + socket.getInetAddress() + " : " + socket.getLocalPort());
+                            tvStatus.setText("Waiting for Clients");
                         }
                     });
+
+                    while (serverRunning) {
+                        // Chấp nhận các kết nối từ Client
+                        Socket socket = serverSocket.accept();
+                        // Xử lý Client kết nối mới trong một luồng riêng biệt
+
+                        ClientHandler client = new ClientHandler(socket);
+                        client.start();
+                        clientsList.add(client);
+                        // Cập nhật giao diện khi có Client kết nối thành công
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                tvStatus.setText("Connected to: " + socket.getInetAddress() + " : " + socket.getLocalPort());
+                            }
+                        });
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-        }
         // Lớp ClientHandler xử lý việc gửi/nhận tin nhắn cho từng Client kết nối
 
         class ClientHandler extends Thread {

@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_margin="10dp"
 
-        app:cardBackgroundColor="#D3FBF0"
+        app:cardBackgroundColor="#F44336"
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,7 +47,7 @@
                 android:paddingLeft="10dp"
                 android:textColor="@color/black"
                 android:text="Server IP: "
-                android:background="@drawable/bacr"
+                android:background="@drawable/layotback"
                 />
             <TextView
                 android:layout_marginTop="10dp"
@@ -60,7 +60,7 @@
                 android:textColor="@color/black"
                 android:text="Sever port: "
                 android:id="@+id/tvServerpory"
-                android:background="@drawable/bacr"
+                android:background="@drawable/layotback"
                 />
 
 
@@ -107,8 +107,8 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edtinhandi"
-            android:layout_width="302dp"
-            android:layout_height="60dp"
+            android:layout_width="402dp"
+            android:layout_height="100dp"
             android:background="@drawable/bacr"
             android:textSize="20sp" />
     </com.google.android.material.textfield.TextInputLayout>
